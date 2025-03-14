@@ -73,7 +73,8 @@ class KDE(Integration):
         windows: list[Window] = []
 
         try:
-            root = self._run_command(["kdotool", "-d", "search"])
+            log.info(f"running kdotool search")
+            root = self._run_command(["kdotool", "search"])
             if root is None:
                 return []
             stdout, _ = root.communicate()
@@ -95,6 +96,7 @@ class KDE(Integration):
     @log.catch
     def get_active_window(self) -> Window:
         try:
+            log.info(f"running kdotool getactivewindow")
             kdotool = self._run_command(["kdotool", "getactivewindow"])
             if kdotool is None:
                 return
@@ -119,7 +121,8 @@ class KDE(Integration):
     @log.catch
     def get_title(self, window_id: str) -> Optional[str]:
         try:
-            kdotool = self._run_command(["kdotool", "-d", "getwindowname", window_id])
+            log.info(f"running kdotool getwindowname {window_id}")
+            kdotool = self._run_command(["kdotool", "getwindowname", window_id])
             if kdotool is None:
                 return
             title = kdotool.communicate()[0].decode().strip()
@@ -132,7 +135,8 @@ class KDE(Integration):
     @log.catch
     def get_class(self, window_id: str) -> Optional[str]:
         try:
-            kdotool = self._run_command(["kdotool", "-d", "getwindowclassname", window_id])
+            log.info(f"running kdotool getwindowclassname {window_id}")
+            kdotool = self._run_command(["kdotool", "getwindowclassname", window_id])
             if kdotool is None:
                 return
             window_class = kdotool.communicate()[0].decode().strip()
