@@ -95,7 +95,7 @@ class KDE(Integration):
     @log.catch
     def get_active_window(self) -> Window:
         try:
-            kdotool = self._run_command(["kdotool", "-d", "getactivewindow"])
+            kdotool = self._run_command(["kdotool", "getactivewindow"])
             if kdotool is None:
                 return
             stdout, _ = kdotool.communicate()
