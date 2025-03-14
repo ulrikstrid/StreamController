@@ -73,7 +73,7 @@ class KDE(Integration):
         windows: list[Window] = []
 
         try:
-            root = self._run_command(["kdotool", "search"])
+            root = self._run_command(["kdotool", "-d", "search"])
             if root is None:
                 return []
             stdout, _ = root.communicate()
@@ -81,8 +81,8 @@ class KDE(Integration):
             window_ids = stdout.decode().strip().split("\n")
             if len(window_ids) < 2:
                 return windows
-        except CalledProcessError as e:
-            log.error(f"An error occurred while running kdotool: {e}")
+        except Exception as e:
+            log.error(f"An error occurred while running kdotool search: {e}")
             return windows
 
         for window_id in window_ids:
@@ -95,7 +95,7 @@ class KDE(Integration):
     @log.catch
     def get_active_window(self) -> Window:
         try:
-            kdotool = self._run_command(["kdotool", "getactivewindow"])
+            kdotool = self._run_command(["kdotool", "-d", "getactivewindow"])
             if kdotool is None:
                 return
             stdout, _ = kdotool.communicate()
@@ -105,8 +105,8 @@ class KDE(Integration):
 
             return self.get_window(window_id)
 
-        except CalledProcessError as e:
-            log.error(f"An error occurred while running kdotool: {e}")
+        except Exception as e:
+            log.error(f"An error occurred while running kdotool getactivewindow: {e}")
 
     @log.catch
     def get_window(self, window_id: str) -> Optional[Window]:
@@ -119,28 +119,28 @@ class KDE(Integration):
     @log.catch
     def get_title(self, window_id: str) -> Optional[str]:
         try:
-            kdotool = self._run_command(["kdotool", "getwindowname", window_id])
+            kdotool = self._run_command(["kdotool", "-d", "getwindowname", window_id])
             if kdotool is None:
                 return
             title = kdotool.communicate()[0].decode().strip()
             if title is None or len(title) < 2:
                 return
             return title
-        except CalledProcessError as e:
-            log.error(f"An error occurred while running kdotool: {e}")
+        except Exception as e:
+            log.error(f"An error occurred while running kdotool getwindowname: {e}")
 
     @log.catch
     def get_class(self, window_id: str) -> Optional[str]:
         try:
-            kdotool = self._run_command(["kdotool", "getwindowclassname", window_id])
+            kdotool = self._run_command(["kdotool", "-d", "getwindowclassname", window_id])
             if kdotool is None:
                 return
             window_class = kdotool.communicate()[0].decode().strip()
             if window_class is None or len(window_class) < 4:
                 return
             return window_class
-        except CalledProcessError as e:
-            log.error(f"An error occurred while running kdotool: {e}")
+        except Exception as e:
+            log.error(f"An error occurred while running kdotool getwindowclassname: {e}")
 
 
 class WatchForActiveWindowChange(threading.Thread):
