@@ -96,7 +96,6 @@ class KDE(Integration):
     @log.catch
     def get_active_window(self) -> Window:
         try:
-            log.info(f"running kdotool getactivewindow")
             kdotool = self._run_command(["kdotool", "getactivewindow"])
             if kdotool is None:
                 return
@@ -121,7 +120,6 @@ class KDE(Integration):
     @log.catch
     def get_title(self, window_id: str) -> Optional[str]:
         try:
-            log.info(f"running kdotool getwindowname {window_id}")
             kdotool = self._run_command(["kdotool", "getwindowname", window_id])
             if kdotool is None:
                 return
@@ -135,7 +133,6 @@ class KDE(Integration):
     @log.catch
     def get_class(self, window_id: str) -> Optional[str]:
         try:
-            log.info(f"running kdotool getwindowclassname {window_id}")
             kdotool = self._run_command(["kdotool", "getwindowclassname", window_id])
             if kdotool is None:
                 return
